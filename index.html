@@ -49,24 +49,20 @@
             font-size: 1.1em;
         }
 
-        /* Containerul principal pentru grila de clipuri */
         .portfolio-grid {
             display: grid;
             gap: 30px;
             max-width: 1200px;
-            margin: 0 auto; /* Centrează grila pe pagină */
-            /* Implicit (pe mobil) este o singură coloană */
+            margin: 0 auto;
             grid-template-columns: 1fr; 
         }
 
-        /* Regula magică pentru Desktop: face 3 coloane egale */
         @media (min-width: 900px) {
             .portfolio-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        /* Cardul cu efect de sticlă pentru fiecare video */
         .video-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
@@ -83,15 +79,22 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        /* Un truc CSS pentru a menține proporția de 16:9 a clipului YouTube */
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Proporția 16:9 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 12px;
             margin-bottom: 15px;
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .video-wrapper iframe {
@@ -101,6 +104,7 @@
             width: 100%;
             height: 100%;
             border: none;
+            border-radius: 12px;
         }
 
         .video-title {
@@ -129,7 +133,7 @@
         
         <div class="video-card">
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/l91Ab4z5w9U?vq=hd1080&rel=0&modestbranding=1" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div id="player-l91Ab4z5w9U"></div>
             </div>
             <h3 class="video-title">Hormozi</h3>
             <p class="video-description">O scurtă descriere despre acest video (ex: Editare dinamică pentru o campanie social media).</p>
@@ -137,7 +141,7 @@
 
         <div class="video-card">
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/XS1Bqw60VPw" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div id="player-XS1Bqw60VPw"></div>
             </div>
             <h3 class="video-title">Titlu Proiect 2</h3>
             <p class="video-description">Detalii despre proiectul 2.</p>
@@ -145,7 +149,7 @@
 
         <div class="video-card">
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/6CmzKYS-0-8" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div id="player-6CmzKYS-0-8"></div>
             </div>
             <h3 class="video-title">Titlu Proiect 3</h3>
             <p class="video-description">Detalii despre proiectul 3.</p>
@@ -153,13 +157,63 @@
 
         <div class="video-card">
             <div class="video-wrapper">
-                <iframe src="https://www.youtube-nocookie.com/embed/eT8gMOx8kQU" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div id="player-eT8gMOx8kQU"></div>
             </div>
             <h3 class="video-title">Titlu Proiect 4</h3>
             <p class="video-description">Un alt exemplu de proiect super reușit.</p>
         </div>
 
     </div>
+
+    <!-- YouTube IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // Lista de video IDs
+        const videoIds = [
+            'l91Ab4z5w9U',
+            'XS1Bqw60VPw',
+            '6CmzKYS-0-8',
+            'eT8gMOx8kQU'
+        ];
+
+        const players = {};
+
+        // Această funcție e apelată automat de API când e gata
+        function onYouTubeIframeAPIReady() {
+            videoIds.forEach(function(id) {
+                players[id] = new YT.Player('player-' + id, {
+                    videoId: id,
+                    playerVars: {
+                        enablejsapi: 1,
+                        rel: 0,
+                        modestbranding: 1
+                    },
+                    events: {
+                        onReady: function(event) {
+                            // Setează calitatea sugerată imediat ce playerul e gata
+                            // hd1080 > hd720 > large (480p) — API va alege cea mai bună disponibilă
+                            event.target.setPlaybackQuality('hd1080');
+                        },
+                        onPlaybackQualityChange: function(event) {
+                            // Dacă YouTube schimbă calitatea (ex: pe mobil), forțăm înapoi la HD
+                            var currentQuality = event.target.getPlaybackQuality();
+                            var availableQualities = event.target.getAvailableQualityLevels();
+                            
+                            // Ordinea preferată de calitate
+                            var preferredQualities = ['hd1080', 'hd720', 'large'];
+                            
+                            for (var i = 0; i < preferredQualities.length; i++) {
+                                if (availableQualities.indexOf(preferredQualities[i]) !== -1) {
+                                    event.target.setPlaybackQuality(preferredQualities[i]);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+    </script>
 
 </body>
 </html>
