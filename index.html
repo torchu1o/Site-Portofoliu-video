@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofoliu Video</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(-45deg, #000000, #a70e00);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #ffffff;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1em;
+        }
+
+        /* Containerul principal pentru grila de clipuri */
+        .portfolio-grid {
+            display: grid;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto; /* Centrează grila pe pagină */
+            /* Implicit (pe mobil) este o singură coloană */
+            grid-template-columns: 1fr; 
+        }
+
+        /* Regula magică pentru Desktop: face 3 coloane egale */
+        @media (min-width: 900px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Cardul cu efect de sticlă pentru fiecare video */
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Un truc CSS pentru a menține proporția de 16:9 a clipului YouTube */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Proporția 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .video-description {
+            font-size: 0.9em;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Portofoliu Video</h1>
+        <p>O selecție cu cele mai bune proiecte ale mele</p>
+    </div>
+
+    <div class="portfolio-grid">
+        
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube-nocookie.com/embed/l91Ab4z5w9U" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <h3 class="video-title">Hormozi</h3>
+            <p class="video-description">O scurtă descriere despre acest video (ex: Editare dinamică pentru o campanie social media).</p>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube-nocookie.com/embed/XS1Bqw60VPw" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <h3 class="video-title">Titlu Proiect 2</h3>
+            <p class="video-description">Detalii despre proiectul 2.</p>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube-nocookie.com/embed/6CmzKYS-0-8" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <h3 class="video-title">Titlu Proiect 3</h3>
+            <p class="video-description">Detalii despre proiectul 3.</p>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube-nocookie.com/embed/eT8gMOx8kQU" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            <h3 class="video-title">Titlu Proiect 4</h3>
+            <p class="video-description">Un alt exemplu de proiect super reușit.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
